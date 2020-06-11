@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>NavWithoutFramework</title>
   <link rel="shortcut icon" type="image/x-icon" href="https://umemotoctrl.github.io/img/favicon.ico" />
   <!-- CSS -->
@@ -13,15 +14,14 @@
     window.onload = function() {
       var id = 'NavBar';
       var list = `<ul>
-        <li><a href="#">aaaaa</a></li>
-        <li><a href="#">bbbbbbbb</a></li>
-        <li><a href="#">ccccccc</a></li>
-        <li>ddddddd<ul><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li></ul></li>
+        <li><a href="#1">aaaaa</a></li>
+        <li><a href="#2">bbbbbbbb</a><ul><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li></ul></li>
+        <li><a href="#3">ccccccc</a></li>
+        <li>ddddddd<ul><li><a href="#4">111111111111111111</a></li><li><a href="#">2</a></li></ul></li>
         </ul>`;
       // window.navbarWoFw.mobile = true;
       window.navbarWoFw.create(id, list);
-      var h1Index = window.navbarWoFw.addH1('NavWithoutFramework', 'title');
-      // navbar.contents[h1Index].style.marginLeft = 1+'em';
+      window.navbarWoFw.addH1('NavWithoutFramework', 'title');
       window.navbarWoFw.render();
     }
   </script>

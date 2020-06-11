@@ -6,25 +6,25 @@
 window.navbarWoFw = {
 	mobile: null,
 	elements: {
-		nav: null,
+		NavWoFw: null,
 		NavWoFwBody: null,
 		NavWoFwHamb: null,
 		NavWoFwCross: null,
 		NavWoFwMenu: null,
+		NavWoFwImg: null,
+		NavWoFwH1: null
 	},
-	contents: new Array(),
 	css: '',
 	list: '',
 	addH1: function (argText, argID) {
-		var h1 = document.createElement("h1");
-		h1.id = argID;
-		h1.style = `
-			color: whitesmoke;
+		this.elements.NavWoFwH1 = document.createElement("h1");
+		this.elements.NavWoFwH1.id = argID;
+		this.elements.NavWoFwH1.style = `
+			overflow: hidden;
+			margin: auto 1rem;
 			padding: 0;
-			margin: auto 1rem;`;
-		h1.innerHTML = argText;
-		this.contents.push(h1);
-		return this.contents.length-1;
+			color: whitesmoke;`;
+		this.elements.NavWoFwH1.innerHTML = argText;
 	},
 	onClickHamb: function (event) {
 		var self = window.navbarWoFw.elements;
@@ -52,23 +52,27 @@ window.navbarWoFw = {
 		// this.elements.nav.mouseout = this.onClickCross;
 		// this.elements.nav.blur = this.onClickCross;
 		
-		this.elements.NavWoFwMenu.innerHTML = this.list;
 		this.elements.NavWoFwBody.appendChild(this.elements.NavWoFwHamb);
 		this.elements.NavWoFwBody.appendChild(this.elements.NavWoFwCross);
 		this.elements.NavWoFwBody.appendChild(this.elements.NavWoFwMenu);
 
-		this.contents.push(this.elements.NavWoFwBody);
+		var contents = [];
+		contents.push(this.elements.NavWoFwH1);
+		contents.push(this.elements.NavWoFwBody);
 
-		for (let ii = 0; ii < (this.contents||[]).length; ii++)
-			this.elements.nav.appendChild(this.contents[ii]);
-		for (let ii = 0; ii < (this.contents||[]).length; ii++) {
-			this.contents[ii].style.marginTop = (this.elements.nav.clientHeight - this.contents[ii].clientHeight)/2+'px';
+		for (let ii = 0; ii < (contents||[]).length; ii++)
+			this.elements.NavWoFw.appendChild(contents[ii]);
+		for (let ii = 0; ii < (contents||[]).length; ii++) {
+			contents[ii].style.marginTop =
+				(this.elements.NavWoFw.clientHeight
+					- contents[ii].clientHeight)/2+'px';
 		}
 		
-		this.elements.nav.style.height = this.elements.nav.clientHeight+'px';
-		this.elements.nav.style.overflow = 'visible';
+		this.elements.NavWoFw.style.height = this.elements.NavWoFw.clientHeight+'px';
+		// this.elements.NavWoFw.style.width = this.elements.NavWoFw.clientWidth+'px';
+		// this.elements.NavWoFw.style.overflow = 'visible';
 
-		document.getElementsByTagName('body')[0].style.marginTop = this.elements.nav.clientHeight+10+'px';
+		document.getElementsByTagName('body')[0].style.marginTop = this.elements.NavWoFw.clientHeight+10+'px';
 	},
 	create: function ( argID, argList ) {
 		var hamb = `
@@ -227,8 +231,8 @@ window.navbarWoFw = {
 		</svg>
 		`;
 	
-		this.elements.nav = document.getElementById(argID);
-		this.elements.nav.mouseleave = this.onClickCross;
+		this.elements.NavWoFw = document.getElementById(argID);
+		// this.elements.NavWoFw.mouseleave = this.onClickCross;
 	
 		var NavWoFwBody = document.createElement("div");
 		NavWoFwBody.id = 'NavWoFwBody';
@@ -238,8 +242,8 @@ window.navbarWoFw = {
 		temp.innerHTML = hamb;
 		var NavWoFwHamb = temp.firstElementChild;
 		NavWoFwHamb.id = 'NavWoFwHamb';
-		NavWoFwHamb.style.width = '5rem';
-		NavWoFwHamb.style.height = '5rem';
+		NavWoFwHamb.style.width = '3rem';
+		NavWoFwHamb.style.height = '3rem';
 		NavWoFwHamb.style.margin = '0';
 		NavWoFwHamb.style.marginRight = '0.5rem';
 		NavWoFwHamb.style.marginLeft = 'auto';
@@ -248,23 +252,31 @@ window.navbarWoFw = {
 		temp.innerHTML = cross;
 		var NavWoFwCross = temp.firstElementChild;
 		NavWoFwCross.id = 'NavWoFwCross';
-		NavWoFwCross.style.width = '5rem';
-		NavWoFwCross.style.height = '5rem';
+		NavWoFwCross.style.width = '3rem';
+		NavWoFwCross.style.height = '3rem';
 		NavWoFwCross.style.display = 'none';
 		NavWoFwCross.style.marginRight = '0.5rem';
 		NavWoFwCross.style.marginLeft = 'auto';
 		this.elements.NavWoFwCross = NavWoFwCross;
 	
+		this.list = argList;
 		var NavWoFwMenu = document.createElement("div");
+		NavWoFwMenu.innerHTML = this.list;
+		NavWoFwMenu = NavWoFwMenu.firstChild;
 		NavWoFwMenu.id = 'NavWoFwMenu';
+		// for (let ii = 0; ii < (NavWoFwMenu.children||[]).length; ii++) {
+		// 	NavWoFwMenu.children[ii].className = 'navList1stLevel';
+		// }
+		// var temp = document.querySelectorAll('ul#NavWoFwMenu ul > li');
+		// for (let ii = 0; ii < (temp||[]).length; ii++) {
+		// 	temp.children[ii].className = 'navList2ndLevel';
+		// }
 		this.elements.NavWoFwMenu = NavWoFwMenu;
 		// NavWoFwMenu.mouseleave = this.onClickCross;
 		// this.elements.NavWoFwMenu.mouseleave = this.onClickCross;
 		// this.elements.nav.mouseleave = this.onClickCross;
 		// this.elements.nav.mouseout = this.onClickCross;
 		// this.elements.nav.blur = this.onClickCross;
-	
-		this.list = argList;
 
 		if ( navigator.userAgent.match(/iPhone|Android.+Mobile/)|| this.mobile==true) {
 			this.css = `nav#${argID} {
@@ -272,48 +284,40 @@ window.navbarWoFw = {
 				width: 100%;
 				margin: 0;
 				padding 0;
-				// background: whitesmoke;
 				background: mediumseagreen;
 				display: flex;
-				// display: table-cell;
-				// vertical-align: middle;
 			}
 			div#NavWoFwBody {
 				margin: auto 0 auto auto;
 				padding: 0;
+				// background: none;
+				// background: transparent;
 			}
-			div#NavWoFwBody {
-				margin: auto 0 auto auto;
-				padding: 0;
-			}
-			div#NavWoFwMenu {
-				display: none;
-				// background: rgb(124, 124, 124);
-				border-radius: 0.3rem;
-				border: 1px solid #bec0c2;
-				background: whitesmoke;
-				// min-width: 5rem;
-				margin: 0;
-				padding: 1rem 0 1rem 4rem;
-				height: fit-content;
-				width: fit-content;
-				// position: relative;
-			}
-			div#NavWoFwMenu a {
+			ul#NavWoFwMenu a {
 				// display: block;
 				// text-decoration: none;
 				// color: rgb(51, 51, 51);
 			}
-			div#NavWoFwMenu ul {
+			ul#NavWoFwMenu {
+				display: none;
+				background: whitesmoke;
+				border-radius: 0.3rem;
+				border: 1px solid #bec0c2;
+				padding: 0.5rem;
 				margin: 0;
-				padding: 0;
-				font-size: 3rem;
-				list-style-type: none;
+				font-size: 1.33rem;
 			}
-			div#NavWoFwMenu li {
-				// border: 1px solid #bec0c2;
+			ul#NavWoFwMenu ul {
+				padding: 0.5rem;
 				margin: 0;
-				padding: 0.5rem 2rem;
+			}
+			// ul#NavWoFwMenu > li {
+			// 	border-bottom: 1px solid #bec0c2;
+			// }
+			ul#NavWoFwMenu li {
+				list-style-type: none;
+				margin: 0;
+				padding: 0.5rem 0rem;
 			}`;
 		} else {
 			NavWoFwHamb.style.display = 'none';
@@ -322,59 +326,48 @@ window.navbarWoFw = {
 				width: 100%;
 				margin: 0;
 				padding 0;
-				// background: whitesmoke;
 				background: mediumseagreen;
 				display: flex;
-				// display: table-cell;
-				// vertical-align: middle;
+				align-items: center; // vertical
+				// justify-content: center; // horizontal
 			}
 			div#NavWoFwBody {
 				margin: auto 0 auto auto;
 				padding: 0;
 			}
-			div#NavWoFwBody {
-				margin: auto 0 auto auto;
-				padding: 0;
-			}
-			div#NavWoFwMenu {
-				border-radius: 0.3rem;
-				// border: 1px solid #bec0c2;
-				// background: whitesmoke;
-				margin: 0;
-				padding: 0;
-				height: fit-content;
-				width: fit-content;
-				// position: relative;
-			}
-			div#NavWoFwMenu a {
-				// display: block;
-				text-decoration: none;
-				color: whitesmoke;
-				// color: rgb(51, 51, 51);
-			}
-			div#NavWoFwMenu ul {
+			ul#NavWoFwMenu,
+			ul#NavWoFwMenu ul {
 				display: flex;
+				list-style-type: none;
 				margin: 0;
 				padding: 0;
 				font-size: 1.33rem;
-				list-style-type: none;
 			}
-			div#NavWoFwMenu ul ul {
+			ul#NavWoFwMenu {
+				border-left: 1px solid whitesmoke;
+			}
+			ul#NavWoFwMenu ul {
 				display: none;
 			}
-			div#NavWoFwMenu li {
-				// border: 1px solid #bec0c2;
+			ul#NavWoFwMenu a {
+				text-decoration: none;
+				color: whitesmoke;
+			}
+			ul#NavWoFwMenu li {
+				text-align: center;
 				margin: 0;
 				padding: 0.7rem 1rem;
 			}
-			div#NavWoFwMenu li:hover {
+			ul#NavWoFwMenu > li {
+				border-right: 1px solid whitesmoke;
+			}
+			ul#NavWoFwMenu li:hover {
 				background: rgb(94, 206, 145);
 			}
-			div#NavWoFwMenu li:hover ul {
+			ul#NavWoFwMenu li:hover ul {
 				display: block;
 			}
-			div#NavWoFwMenu li li {}
-			div#NavWoFwMenu li li:hover {
+			ul#NavWoFwMenu li li:hover {
 				background: mediumseagreen;
 			}`;
 		}

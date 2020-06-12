@@ -14,8 +14,7 @@ window.navbarWoFw = {
 	mobile: null,
 	elements: {
 		NavWoFw: null,
-		NavWoFwBody: null,
-		NavWoFwHamberger: null,
+		NavWoFwHamburger: null,
 		NavWoFwMenu: null,
 		NavWoFwImg: null,
 		NavWoFwH1: null,
@@ -28,27 +27,32 @@ window.navbarWoFw = {
 		this.elements.NavWoFwH1.id = 'NavWoFwH1';
 		this.elements.NavWoFwH1.innerHTML = argText;
 	},
-	onClickHamberger: function (event) {
-		if (document.querySelector('#NavWoFwHamberger > input').checked)
-			document.querySelector('#NavWoFwHamberger > label >img').src = window.navbarWoFw.config.srcCross;
+	onClickHamburger: function (event) {
+		if (document.querySelector('#NavWoFwHamburger > input').checked)
+			document.querySelector('#NavWoFwHamburger > label >img').src = window.navbarWoFw.config.srcCross;
 		else
-			document.querySelector('#NavWoFwHamberger > label > img').src = window.navbarWoFw.config.srcHamb;
+			document.querySelector('#NavWoFwHamburger > label > img').src = window.navbarWoFw.config.srcHamb;
+	},
+	setHambMenu: function ( argBool ) {
+		if ( argBool ) {
+			document.querySelector('#NavWoFwHamburger > input').checked = true;
+			document.querySelector('#NavWoFwHamburger > label >img').src = window.navbarWoFw.config.srcCross;
+		} else {
+			document.querySelector('#NavWoFwHamburger > input').checked = false;
+			document.querySelector('#NavWoFwHamburger > label > img').src = window.navbarWoFw.config.srcHamb;
+		}
 	},
 	render: function () {
-		// console.log("hogehoge.");
 		var style = document.createElement("style");
 		style.innerHTML = this.css;
 		document.getElementsByTagName("head")[0].appendChild(style);
-
-		this.elements.NavWoFwBody.appendChild(this.elements.NavWoFwHamberger);
-		// this.elements.NavWoFwBody.appendChild(this.elements.NavWoFwMenu);
 
 		var contents = [];
 		if (this.elements.NavWoFwImg != null)
 			contents.push(this.elements.NavWoFwImg);
 		if (this.elements.NavWoFwH1 != null)
 			contents.push(this.elements.NavWoFwH1);
-		contents.push(this.elements.NavWoFwBody);
+		contents.push(this.elements.NavWoFwHamburger);
 
 		for (let ii = 0; ii < (contents||[]).length; ii++)
 			this.elements.NavWoFw.appendChild(contents[ii]);
@@ -68,24 +72,22 @@ window.navbarWoFw = {
 		this.elements.NavWoFw = document.getElementById(argID);
 		// this.elements.NavWoFw.mouseleave = this.onClickCross;
 	
-		var NavWoFwBody = document.createElement("div");
-		NavWoFwBody.id = 'NavWoFwBody';
-		this.elements.NavWoFwBody = NavWoFwBody;
-
-		var NavWoFwHamberger = document.createElement('div');
-		NavWoFwHamberger.id = 'NavWoFwHamberger';
-		NavWoFwHamberger.innerHTML = `
-		<input type="checkbox" id="NavWoFwHambChkBx" onclick="window.navbarWoFw.onClickHamberger()">
+		var NavWoFwHamburger = document.createElement('div');
+		NavWoFwHamburger.id = 'NavWoFwHamburger';
+		NavWoFwHamburger.innerHTML = `
+		<input type="checkbox" id="NavWoFwHambChkBx" onclick="window.navbarWoFw.onClickHamburger()">
 		<label for="NavWoFwHambChkBx"><img src="${this.config.srcHamb}"></label>`;
 
 		this.list = argList;
 		var NavWoFwMenu = document.createElement("div");
 		NavWoFwMenu.innerHTML = this.list;
-		NavWoFwMenu = NavWoFwMenu.firstChild;
+		// console.log(NavWoFwMenu.children);
+		// NavWoFwMenu = NavWoFwMenu.firstChild;
+		NavWoFwMenu = NavWoFwMenu.children[0];
 		NavWoFwMenu.id = 'NavWoFwMenu';
-		NavWoFwHamberger.appendChild(NavWoFwMenu);
+		NavWoFwHamburger.appendChild(NavWoFwMenu);
 
-		this.elements.NavWoFwHamberger = NavWoFwHamberger;
+		this.elements.NavWoFwHamburger = NavWoFwHamburger;
 
 		this.elements.NavWoFwMenu = NavWoFwMenu;
 		
@@ -93,9 +95,9 @@ window.navbarWoFw = {
 		var bgColor = this.config.colors[1];
 		var focusedBgColor = this.config.colors[2];
 		if ( navigator.userAgent.match(/iPhone|Android.+Mobile/)|| this.mobile==true) {
-			// this.elements.NavWoFwMenu.mouseleave = this.onClickHamberger;
-			// this.elements.NavWoFwMenu.mouseout = this.onClickHamberger;
-			// this.elements.NavWoFwMenu.blur = this.onClickHamberger;
+			// this.elements.NavWoFwMenu.mouseleave = this.onClickHamburger;
+			// this.elements.NavWoFwMenu.mouseout = this.onClickHamburger;
+			// this.elements.NavWoFwMenu.blur = this.onClickHamburger;
 			this.css = `
 			nav#${argID} {
 				position: fixed; top: 0; left: 0;
@@ -107,57 +109,56 @@ window.navbarWoFw = {
 				align-items: center; // vertical
 				color: ${textColor};
 			}
-			div#NavWoFwBody {
-				margin: auto 0 auto auto;
-				padding: 0;
-			}
 			h1#NavWoFwH1 {
 				font-size: 1rem;
 				word-break: break-all;
 				word-wrap: break-word;
 				overflow: hidden;
-				margin: auto 1rem;
+				// margin: auto 1rem;
+				margin-left: 1rem;
 				padding: 0;
 				color: ${textColor};
 			}
-			#NavWoFwHamberger {
+			#NavWoFwHamburger {
+				margin: auto 0 auto auto;
+				padding: 0;
 				color: ${textColor};
 			}
-			#NavWoFwHamberger a {
+			#NavWoFwHamburger a {
 				color: ${textColor};
 				text-decoration: none;
 				font-weight: bold;
 			}
-			#NavWoFwHamberger > label > img {
+			#NavWoFwHamburger > label > img {
 				display: block;
 				margin: auto 0 auto auto;
 				width: 3rem;
 				height: 3rem;
 			}
-			#NavWoFwHamberger > input {
+			#NavWoFwHamburger > input {
 				display: none;
 			}
-			#NavWoFwHamberger > ul {
+			#NavWoFwHamburger > ul {
 				padding: 0;
 				margin: 0;
 				list-style-type: none;
 				background: ${bgColor};
 			}
-			#NavWoFwHamberger > ul ul {
+			#NavWoFwHamburger > ul ul {
 				padding: 0;
 				margin: 0.5rem 0 0 0;
 				list-style-type: none;
 			}
-			#NavWoFwHamberger > ul > li {
+			#NavWoFwHamburger > ul > li {
 				padding: 0.5rem 1rem;
 				background: ${bgColor};
 				border-bottom: 1px solid ${textColor};
 			}
-			#NavWoFwHamberger li li {
+			#NavWoFwHamburger li li {
 				padding: 0.5rem 1rem;
 				border-top: 1px solid ${textColor};
 			}
-			#NavWoFwHamberger > input + label + ul{
+			#NavWoFwHamburger > input + label + ul{
 				overflow: hidden;
 				max-height: 0;
 				transition-property: max-height padding border;
@@ -169,7 +170,7 @@ window.navbarWoFw = {
 				// -o-transition: max-height .2s ease;
 				// -ms-transition: max-height .2s ease;
 			}
-			#NavWoFwHamberger > input[type="checkbox"]:checked + label + ul {
+			#NavWoFwHamburger > input[type="checkbox"]:checked + label + ul {
 				// height: fit-content;
 				max-height: 40rem;
 				padding: 0.5rem;
@@ -177,9 +178,9 @@ window.navbarWoFw = {
 			`;
 		} else {
 			this.css = `
-			#NavWoFwHamberger > label,
-			#NavWoFwHamberger > img,
-			#NavWoFwHamberger > input {
+			#NavWoFwHamburger > label,
+			#NavWoFwHamburger > img,
+			#NavWoFwHamburger > input {
 				display: none;
 			}
 			nav#${argID} {
@@ -194,11 +195,12 @@ window.navbarWoFw = {
 			}
 			h1#NavWoFwH1 {
 				overflow: hidden;
-				margin: auto 1rem;
+				// margin: auto 1rem;
+				margin-left: 1rem;
 				padding: 0;
 				color: ${textColor};
 			}
-			div#NavWoFwBody {
+			div#NavWoFwHamburger {
 				margin: auto 0 auto auto;
 				padding: 0;
 			}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>NavWithoutFramework</title>
+  <link rel="shortcut icon" type="image/x-icon" href="https://umemotoctrl.github.io/img/favicon.ico" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/light.min.css">
+  <!-- <link rel="stylesheet" href="css/style.css" /> -->
+  <style>
+    #toggle-1 + label + ul li {
+      height: 0;
+      overflow: hidden;
+      transition-property: all;
+      transition: 1s;
+      -webkit-transition: height 1s ease;
+      -moz-transition: height 1s ease;
+      -o-transition: height 1s ease;
+      -ms-transition: height 1s ease;
+    }
+    input[type="checkbox"]#toggle-1:hover + label + ul li {
+      overflow: visible;
+      height: 10rem;
+    }
+  </style>
+  <script>
+  </script>
+</head>
+
+<body>
+  <div>
+  <input type="checkbox" id="toggle-1">
+  <label for="toggle-1"><img src="/img/hamburger.svg"></label>
+  <ul>
+    <li><a href="#1">aaaaa</a></li>
+    <li><a href="#2">bbbbbbbb</a><ul><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li></ul></li>
+    <li><a href="#3">ccccccc</a></li>
+    <li>ddddddd<ul><li><a href="#4">111111111111111111</a></li><li><a href="#">2</a></li></ul></li>
+  </ul>
+  </div>
+<hr />
+<p>Copyright (c) 2020 Kazuki Umemoto</p>
+</body>
+</html>

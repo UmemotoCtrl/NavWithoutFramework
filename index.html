@@ -8,13 +8,20 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/light.min.css">
   <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* div {
+      color: rgb(154, 18, 154);
+    } */
+  </style>
   <!-- Original JS -->
   <script src="js/navwofw.js" defer></script>
   <script defer>
     window.onload = function() {
-      // window.navbarWoFw.mobile = true;
+      window.navbarWoFw.mobile = true;
       window.navbarWoFw.config.srcHamb = '/img/hamburger.svg',
-      window.navbarWoFw.config.srcCross = '/img/hamburger.svg',
+      window.navbarWoFw.config.srcCross = '/img/cross.svg',
+      // window.navbarWoFw.config.colors = ['whitesmoke', 'mediumseagreen', 'rgb(123, 211, 163)'];
+      window.navbarWoFw.config.colors = ['whitesmoke', '#8B008C', 'rgb(154, 18, 154)'];
       window.navbarWoFw.create('NavBar', `<ul>
         <li><a href="#1">aaaaa</a></li>
         <li><a href="#2">bbbbbbbb</a><ul><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li></ul></li>
@@ -36,12 +43,8 @@
     gtag('config', 'UA-166116914-1');
   </script> -->
 </head>
-
 <body>
 <nav id="NavBar"></nav>
-<!-- <nav style="width:100%;height:100px;background:mediumseagreen;vertical-align: middle;display: table-cell;">
-<span>a</span>
-</nav> -->
 <div id="article">
   <p>test1.</p>
   <p>test2.</p>

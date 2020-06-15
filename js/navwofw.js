@@ -8,7 +8,14 @@
 		mobileMatchRegExp: new RegExp("iPhone|Android.+Mobile"),
 		srcHamb: 'https://cdn.jsdelivr.net/gh/UmemotoCtrl/NavWithoutFramework@0.01/img/hamburger.svg',
 		srcCross: 'https://cdn.jsdelivr.net/gh/UmemotoCtrl/NavWithoutFramework@0.01/img/cross.svg',
-		colors: ['whitesmoke', '#10606D', '#008082'],
+		cssRootProperties: {
+			'--NavWoFwTextColor': 'whitesmoke',
+			'--NavWoFwBackgroundColor': '#10606D',
+			'--NavWoFwFocusedColor': '#008082',
+			'--NavWoFwFontSize': '1.1rem',
+			'--NavWoFwIconHeight': '3rem',
+			'--NavWoFwLiPaddingDesktop': '0.75rem 0.5rem'
+		},
 		topMargin: 16,	// unit, px
 		navCSSForMobile: `
 			position: fixed; top: 0; left: 0;
@@ -25,9 +32,9 @@
 		contentsCSSForMobile: `
 			img#NavWoFwImg {
 				display: block;
-				margin: auto 0.5rem;
+				margin: auto 0 auto 0.5rem;
 				// width: 2.5rem;
-				height: 2.5rem;
+				height: calc(var(--NavWoFwIconHeight)*0.6);
 			}
 			h1#NavWoFwH1 {
 				font-size: 1rem;
@@ -53,8 +60,8 @@
 			#NavWoFwHamburger > label > img {
 				display: block;
 				margin: auto 0 auto auto;
-				width: 3rem;
-				height: 3rem;
+				width: var(--NavWoFwIconHeight);
+				height: var(--NavWoFwIconHeight);
 			}
 			#NavWoFwHamburger > input {
 				display: none;
@@ -64,7 +71,7 @@
 				margin: 0;
 				list-style-type: none;
 				background: var(--NavWoFwBackgroundColor);
-				max-width: 3rem;
+				max-width: var(--NavWoFwIconWidth);
 			}
 			#NavWoFwHamburger > ul ul {
 				padding: 0;
@@ -116,16 +123,17 @@
 			}
 			img#NavWoFwImg {
 				display: block;
-				margin: auto 0.5rem;
-				// width: 2.5rem;
-				height: 2.5rem;
+				margin: auto 0 auto 0.5rem;
+				// padding: 0.5rem;
+				height: calc(var(--NavWoFwIconHeight)*0.6);
 			}
 			h1#NavWoFwH1 {
 				overflow: hidden;
-				// margin: auto 1rem;
-				margin-left: 1rem;
+				margin: auto 0 auto 1rem;
+				// margin-left: 1rem;
 				padding: 0;
 				color: var(--NavWoFwTextColor);
+				font-size: 1.33rem;
 			}
 			div#NavWoFwHamburger {
 				margin: auto 0 auto auto;
@@ -136,13 +144,13 @@
 				text-align: center;
 				display: flex;
 				list-style-type: none;
-				margin: 0;
+				margin: auto 0;
 				padding: 0;
-				font-size: 1.33rem;
+				font-size: var(--NavWoFwFontSize);
 			}
 			ul#NavWoFwMenu li {
 				margin: 0;
-				padding: 0.7rem 1rem;
+				padding: var(--NavWoFwLiPaddingDesktop);
 				// transition-property: max-height padding background;
 				transition-property: all;
 				transition-duration: .2s;
@@ -155,7 +163,7 @@
 				list-style-type: none;
 				margin: 0.5rem 0 0 0;
 				padding: 0;
-				font-size: 1.33rem;
+				font-size: var(--NavWoFwFontSize);
 			}
 			// ul#NavWoFwMenu ul:before {
 			// 	display: inline;
@@ -173,7 +181,7 @@
 			ul#NavWoFwMenu li:hover > ul > li {
 				max-height: 10rem;
 				// overflow: visible;
-				padding: 0.7rem 1rem;
+				padding: var(--NavWoFwLiPaddingDesktop);
 			}
 			ul#NavWoFwMenu ul li:hover {
 				background: var(--NavWoFwBackgroundColor);
@@ -187,11 +195,6 @@
 	window.navbarWoFw = {
 		config: initConfig,
 		mobile: false,
-		cssRootProperties: {
-			'--NavWoFwTextColor': null,
-			'--NavWoFwBackgroundColor': null,
-			'--NavWoFwFocusedColor': null
-		},
 		ids: {
 			NavWoFw: null,
 			NavWoFwHamburger: 'NavWoFwHamburger',
@@ -237,7 +240,21 @@
 			}
 		},
 		render: function () {
+			// Add properties as css :root variable
+			var keys = Object.keys(this.config.cssRootProperties);
+			for (let ii = 0; ii < (keys||[]).length; ii++) {
+				document.documentElement.style.setProperty(keys[ii], this.config.cssRootProperties[keys[ii]]);
+				// .style.getPropertyValue('--a')
+			}
+	
 			var style = document.createElement("style");
+			this.mobile = navigator.userAgent.match(this.config.mobileMatchRegExp) || this.mobile;
+			if ( this.mobile ) {
+				this.elements.NavWoFw.onmouseleave = function() {window.navbarWoFw.setHamburgerMenu(false)};
+				this.css = `nav#${this.ids.NavWoFw} {${this.config.navCSSForMobile}}${this.config.contentsCSSForMobile}`;
+			} else {
+				this.css = `nav#${this.ids.NavWoFw} {${this.config.navCSSForDesktop}}${this.config.contentsCSSForDesktop}`;
+			}
 			style.innerHTML = this.css;
 			document.getElementsByTagName("head")[0].appendChild(style);
 	
@@ -269,14 +286,6 @@
 			document.getElementsByTagName('body')[0].style.marginTop = this.elements.NavWoFw.clientHeight+this.config.topMargin+'px';
 		},
 		create: function ( argID, argList ) {
-			// Add properties as css :root variable
-			var keys = Object.keys(this.cssRootProperties);
-			for (let ii = 0; ii < (keys||[]).length; ii++) {
-				this.cssRootProperties[keys[ii]] = this.config.colors[ii];
-				document.documentElement.style.setProperty(keys[ii], this.cssRootProperties[keys[ii]]);
-				// .style.getPropertyValue('--a')
-			}
-	
 			this.elements.NavWoFw = document.getElementById(argID);
 			this.ids.NavWoFw = argID;
 		
@@ -295,14 +304,6 @@
 			this.elements.NavWoFwHamburger = NavWoFwHamburger;
 	
 			this.elements.NavWoFwMenu = NavWoFwMenu;
-			
-			this.mobile = navigator.userAgent.match(this.config.mobileMatchRegExp) || this.mobile;
-			if ( this.mobile ) {
-				this.elements.NavWoFw.onmouseleave = function() {window.navbarWoFw.setHamburgerMenu(false)};
-				this.css = `nav#${this.ids.NavWoFw} {${this.config.navCSSForMobile}}${this.config.contentsCSSForMobile}`;
-			} else {
-				this.css = `nav#${this.ids.NavWoFw} {${this.config.navCSSForDesktop}}${this.config.contentsCSSForDesktop}`;
-			}
 		}
 	};
 })();

@@ -3,125 +3,50 @@
 // Copyright (c) 2020 Kazuki UMEMOTO
 // see https://github.com/UmemotoCtrl/NavWithoutFramework/ for details
 //
-window.navbarWoFw = {
-	config: {
-		srcHamb: 'https://cdn.jsdelivr.net/gh/UmemotoCtrl/NavWithoutFramework@master/img/hamburger.svg',
-		srcCross: 'https://cdn.jsdelivr.net/gh/UmemotoCtrl/NavWithoutFramework@master/img/cross.svg',
-		colors: ['whitesmoke', '#10606D', '#008082']
-	},
-	mobile: null,
-	elements: {
-		NavWoFw: null,
-		NavWoFwHamburger: null,
-		NavWoFwMenu: null,
-		NavWoFwImg: null,
-		NavWoFwH1: null,
-		NavWoFwDiv: null,
-	},
-	css: '',
-	list: '',
-	addH1: function (argText) {
-		this.elements.NavWoFwH1 = document.createElement("h1");
-		this.elements.NavWoFwH1.id = 'NavWoFwH1';
-		this.elements.NavWoFwH1.innerHTML = argText;
-	},
-	onClickHamburger: function (event) {
-		if (document.querySelector('#NavWoFwHamburger > input').checked)
-			document.querySelector('#NavWoFwHamburger > label >img').src = window.navbarWoFw.config.srcCross;
-		else
-			document.querySelector('#NavWoFwHamburger > label > img').src = window.navbarWoFw.config.srcHamb;
-	},
-	setHambMenu: function ( argBool ) {
-		if ( argBool ) {
-			document.querySelector('#NavWoFwHamburger > input').checked = true;
-			document.querySelector('#NavWoFwHamburger > label >img').src = window.navbarWoFw.config.srcCross;
-		} else {
-			document.querySelector('#NavWoFwHamburger > input').checked = false;
-			document.querySelector('#NavWoFwHamburger > label > img').src = window.navbarWoFw.config.srcHamb;
-		}
-	},
-	render: function () {
-		var style = document.createElement("style");
-		style.innerHTML = this.css;
-		document.getElementsByTagName("head")[0].appendChild(style);
-
-		var contents = [];
-		if (this.elements.NavWoFwImg != null)
-			contents.push(this.elements.NavWoFwImg);
-		if (this.elements.NavWoFwH1 != null)
-			contents.push(this.elements.NavWoFwH1);
-		contents.push(this.elements.NavWoFwHamburger);
-
-		for (let ii = 0; ii < (contents||[]).length; ii++)
-			this.elements.NavWoFw.appendChild(contents[ii]);
-		for (let ii = 0; ii < (contents||[]).length; ii++) {
-			contents[ii].style.marginTop =
-				(this.elements.NavWoFw.clientHeight
-					- contents[ii].clientHeight)/2+'px';
-		}
-		
-		this.elements.NavWoFw.style.height = this.elements.NavWoFw.clientHeight+'px';
-		// this.elements.NavWoFw.style.width = this.elements.NavWoFw.clientWidth+'px';
-		// this.elements.NavWoFw.style.overflow = 'visible';
-
-		document.getElementsByTagName('body')[0].style.marginTop = this.elements.NavWoFw.clientHeight+10+'px';
-	},
-	create: function ( argID, argList ) {
-		this.elements.NavWoFw = document.getElementById(argID);
-		// this.elements.NavWoFw.mouseleave = this.onClickCross;
-	
-		var NavWoFwHamburger = document.createElement('div');
-		NavWoFwHamburger.id = 'NavWoFwHamburger';
-		NavWoFwHamburger.innerHTML = `
-		<input type="checkbox" id="NavWoFwHambChkBx" onclick="window.navbarWoFw.onClickHamburger()">
-		<label for="NavWoFwHambChkBx"><img src="${this.config.srcHamb}"></label>`;
-
-		this.list = argList;
-		var NavWoFwMenu = document.createElement("div");
-		NavWoFwMenu.innerHTML = this.list;
-		NavWoFwMenu = NavWoFwMenu.firstElementChild;
-		NavWoFwMenu.id = 'NavWoFwMenu';
-		NavWoFwHamburger.appendChild(NavWoFwMenu);
-
-		this.elements.NavWoFwHamburger = NavWoFwHamburger;
-
-		this.elements.NavWoFwMenu = NavWoFwMenu;
-		
-		var textColor = this.config.colors[0];
-		var bgColor = this.config.colors[1];
-		var focusedBgColor = this.config.colors[2];
-		if ( navigator.userAgent.match(/iPhone|Android.+Mobile/)|| this.mobile==true) {
-			// this.elements.NavWoFwMenu.mouseleave = this.onClickHamburger;
-			// this.elements.NavWoFwMenu.mouseout = this.onClickHamburger;
-			// this.elements.NavWoFwMenu.blur = this.onClickHamburger;
-			this.css = `
-			nav#${argID} {
-				position: fixed; top: 0; left: 0;
-				width: 100%;
-				margin: 0;
-				padding auto;
-				background: ${bgColor};
-				display: flex;
-				align-items: center; // vertical
-				color: ${textColor};
+(function () {
+	var initConfig = {
+		mobileMatchRegExp: new RegExp("iPhone|Android.+Mobile"),
+		srcHamb: 'https://cdn.jsdelivr.net/gh/UmemotoCtrl/NavWithoutFramework@0.01/img/hamburger.svg',
+		srcCross: 'https://cdn.jsdelivr.net/gh/UmemotoCtrl/NavWithoutFramework@0.01/img/cross.svg',
+		colors: ['whitesmoke', '#10606D', '#008082'],
+		topMargin: 16,	// unit, px
+		navCSSForMobile: `
+			position: fixed; top: 0; left: 0;
+			width: 100%;
+			margin: 0;
+			padding auto;
+			background: var(--NavWoFwBackgroundColor);
+			display: flex;
+			color: var(--NavWoFwTextColor);
+			align-items: center; // vertical
+			// justify-content: center; // horizontal
+			// flex-wrap
+		`,
+		contentsCSSForMobile: `
+			img#NavWoFwImg {
+				display: block;
+				margin: auto 0.5rem;
+				// width: 2.5rem;
+				height: 2.5rem;
 			}
 			h1#NavWoFwH1 {
 				font-size: 1rem;
-				word-break: break-all;
-				word-wrap: break-word;
+				// overflow: visible;
 				overflow: hidden;
 				// margin: auto 1rem;
 				margin-left: 1rem;
 				padding: 0;
-				color: ${textColor};
+				color: var(--NavWoFwTextColor);
 			}
 			#NavWoFwHamburger {
 				margin: auto 0 auto auto;
 				padding: 0;
-				color: ${textColor};
+				color: var(--NavWoFwTextColor);
+				word-wrap: break-word;
+				// word-break: break-all;
 			}
 			#NavWoFwHamburger a {
-				color: ${textColor};
+				color: var(--NavWoFwTextColor);
 				text-decoration: none;
 				font-weight: bold;
 			}
@@ -138,7 +63,8 @@ window.navbarWoFw = {
 				padding: 0;
 				margin: 0;
 				list-style-type: none;
-				background: ${bgColor};
+				background: var(--NavWoFwBackgroundColor);
+				max-width: 3rem;
 			}
 			#NavWoFwHamburger > ul ul {
 				padding: 0;
@@ -147,17 +73,17 @@ window.navbarWoFw = {
 			}
 			#NavWoFwHamburger > ul > li {
 				padding: 0.5rem 1rem;
-				background: ${bgColor};
-				border-bottom: 1px solid ${textColor};
+				background: var(--NavWoFwBackgroundColor);
+				border-bottom: 1px solid var(--NavWoFwTextColor);
 			}
 			#NavWoFwHamburger li li {
 				padding: 0.5rem 1rem;
-				border-top: 1px solid ${textColor};
+				border-top: 1px solid var(--NavWoFwTextColor);
 			}
 			#NavWoFwHamburger > input + label + ul{
 				overflow: hidden;
 				max-height: 0;
-				transition-property: max-height padding border;
+				transition-property: max-height max-width padding border;
 				transition-duration: .2s;
 				// transition: .2s;
 				// transition-property: all;
@@ -169,39 +95,44 @@ window.navbarWoFw = {
 			#NavWoFwHamburger > input[type="checkbox"]:checked + label + ul {
 				// height: fit-content;
 				max-height: 40rem;
+				max-width: 20rem;
 				padding: 0.5rem;
 			}
-			`;
-		} else {
-			this.css = `
+		`,
+		navCSSForDesktop: `
+			position: fixed; top: 0; left: 0;
+			width: 100%;
+			margin: 0;
+			padding 0;
+			background: var(--NavWoFwBackgroundColor);
+			display: flex;
+			align-items: center; // vertical
+		`,
+		contentsCSSForDesktop: `
 			#NavWoFwHamburger > label,
 			#NavWoFwHamburger > img,
 			#NavWoFwHamburger > input {
 				display: none;
 			}
-			nav#${argID} {
-				position: fixed; top: 0; left: 0;
-				width: 100%;
-				margin: 0;
-				padding 0;
-				background: ${bgColor};
-				display: flex;
-				align-items: center; // vertical
-				// justify-content: center; // horizontal
+			img#NavWoFwImg {
+				display: block;
+				margin: auto 0.5rem;
+				// width: 2.5rem;
+				height: 2.5rem;
 			}
 			h1#NavWoFwH1 {
 				overflow: hidden;
 				// margin: auto 1rem;
 				margin-left: 1rem;
 				padding: 0;
-				color: ${textColor};
+				color: var(--NavWoFwTextColor);
 			}
 			div#NavWoFwHamburger {
 				margin: auto 0 auto auto;
 				padding: 0;
 			}
 			ul#NavWoFwMenu {
-				color: ${textColor};
+				color: var(--NavWoFwTextColor);
 				text-align: center;
 				display: flex;
 				list-style-type: none;
@@ -218,7 +149,7 @@ window.navbarWoFw = {
 			}
 			ul#NavWoFwMenu a {
 				text-decoration: none;
-				color: ${textColor};
+				color: var(--NavWoFwTextColor);
 			}
 			ul#NavWoFwMenu ul {
 				list-style-type: none;
@@ -226,14 +157,18 @@ window.navbarWoFw = {
 				padding: 0;
 				font-size: 1.33rem;
 			}
+			// ul#NavWoFwMenu ul:before {
+			// 	display: inline;
+			// 	content: "v";
+			// }
 			ul#NavWoFwMenu ul li {
 				max-height: 0;
 				overflow: hidden;
 				padding: 0;
-				background: ${focusedBgColor};
+				background: var(--NavWoFwFocusedColor);
 			}
 			ul#NavWoFwMenu > li:hover {
-				background: ${focusedBgColor};
+				background: var(--NavWoFwFocusedColor);
 			}
 			ul#NavWoFwMenu li:hover > ul > li {
 				max-height: 10rem;
@@ -241,12 +176,133 @@ window.navbarWoFw = {
 				padding: 0.7rem 1rem;
 			}
 			ul#NavWoFwMenu ul li:hover {
-				background: ${bgColor};
+				background: var(--NavWoFwBackgroundColor);
 			}
 			ul#NavWoFwMenu li:hover > a {
 				border-bottom: 2px solid;
 			}
-			`;
+		`
+	};
+
+	window.navbarWoFw = {
+		config: initConfig,
+		mobile: false,
+		cssRootProperties: {
+			'--NavWoFwTextColor': null,
+			'--NavWoFwBackgroundColor': null,
+			'--NavWoFwFocusedColor': null
+		},
+		ids: {
+			NavWoFw: null,
+			NavWoFwHamburger: 'NavWoFwHamburger',
+			NavWoFwMenu: 'NavWoFwMenu',
+			NavWoFwImg: 'NavWoFwImg',
+			NavWoFwH1: 'NavWoFwH1',
+			NavWoFwDiv: 'NavWoFwDiv'
+		},
+		elements: {
+			NavWoFw: null,
+			NavWoFwHamburger: null,
+			NavWoFwMenu: null,
+			NavWoFwImg: null,
+			NavWoFwH1: null,
+			NavWoFwDiv: null
+		},
+		css: '',
+		addImg: function (argSrc, argAlt) {
+			this.elements.NavWoFwImg = document.createElement("img");
+			this.elements.NavWoFwImg.id = 'NavWoFwImg';
+			this.elements.NavWoFwImg.alt = argAlt;
+			this.elements.NavWoFwImg.src = argSrc;
+		},
+		addH1: function (argText) {
+			this.elements.NavWoFwH1 = document.createElement("h1");
+			this.elements.NavWoFwH1.id = 'NavWoFwH1';
+			this.elements.NavWoFwH1.innerHTML = argText;
+		},
+		onClickHamburger: function (event) {
+			this.setHamburgerMenu(document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked);
+			// if (document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked)
+			// 	document.querySelector(`#${this.ids.NavWoFwHamburger} > label >img`).src = this.config.srcCross;
+			// else
+			// 	document.querySelector(`#${this.ids.NavWoFwHamburger} > label > img`).src = this.config.srcHamb;
+		},
+		setHamburgerMenu: function ( argBool ) {
+			if ( argBool ) {
+				document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked = true;
+				document.querySelector(`#${this.ids.NavWoFwHamburger} > label > img`).src = this.config.srcCross;
+			} else {
+				document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked = false;
+				document.querySelector(`#${this.ids.NavWoFwHamburger} > label > img`).src = this.config.srcHamb;
+			}
+		},
+		render: function () {
+			var style = document.createElement("style");
+			style.innerHTML = this.css;
+			document.getElementsByTagName("head")[0].appendChild(style);
+	
+			var contents = [];
+			if (this.elements.NavWoFwImg != null)
+				contents.push(this.elements.NavWoFwImg);
+			if (this.elements.NavWoFwH1 != null)
+				contents.push(this.elements.NavWoFwH1);
+			contents.push(this.elements.NavWoFwHamburger);
+	
+			for (let ii = 0; ii < (contents||[]).length; ii++)
+				this.elements.NavWoFw.appendChild(contents[ii]);
+			// Fix position of navbar elements.
+			for (let ii = 0; ii < (contents||[]).length; ii++) {
+				contents[ii].style.marginTop = (this.elements.NavWoFw.clientHeight - contents[ii].clientHeight)/2+'px';
+			}
+			// Fix width of list items.
+			if (!this.mobile) {
+				var listItems = document.getElementById('NavWoFwMenu').children;
+				for (let ii = 0; ii < (listItems||[]).length; ii++) {
+					listItems[ii].style.width = listItems[ii].clientWidth + 'px';
+				}
+			}
+			
+			this.elements.NavWoFw.style.height = this.elements.NavWoFw.clientHeight+'px';
+			// this.elements.NavWoFw.style.width = this.elements.NavWoFw.clientWidth+'px';
+			// this.elements.NavWoFw.style.overflow = 'visible';
+	
+			document.getElementsByTagName('body')[0].style.marginTop = this.elements.NavWoFw.clientHeight+this.config.topMargin+'px';
+		},
+		create: function ( argID, argList ) {
+			// Add properties as css :root variable
+			var keys = Object.keys(this.cssRootProperties);
+			for (let ii = 0; ii < (keys||[]).length; ii++) {
+				this.cssRootProperties[keys[ii]] = this.config.colors[ii];
+				document.documentElement.style.setProperty(keys[ii], this.cssRootProperties[keys[ii]]);
+				// .style.getPropertyValue('--a')
+			}
+	
+			this.elements.NavWoFw = document.getElementById(argID);
+			this.ids.NavWoFw = argID;
+		
+			var NavWoFwHamburger = document.createElement('div');
+			NavWoFwHamburger.id = 'NavWoFwHamburger';
+			NavWoFwHamburger.innerHTML = `
+			<input type="checkbox" id="NavWoFwHambChkBx" onclick="window.navbarWoFw.onClickHamburger()">
+			<label for="NavWoFwHambChkBx"><img src="${this.config.srcHamb}"></label>`;
+	
+			var NavWoFwMenu = document.createElement("ul");
+			NavWoFwMenu.innerHTML = argList;
+			NavWoFwMenu = NavWoFwMenu.firstElementChild;
+			NavWoFwMenu.id = 'NavWoFwMenu';
+			NavWoFwHamburger.appendChild(NavWoFwMenu);
+	
+			this.elements.NavWoFwHamburger = NavWoFwHamburger;
+	
+			this.elements.NavWoFwMenu = NavWoFwMenu;
+			
+			this.mobile = navigator.userAgent.match(this.config.mobileMatchRegExp) || this.mobile;
+			if ( this.mobile ) {
+				this.elements.NavWoFw.onmouseleave = function() {window.navbarWoFw.setHamburgerMenu(false)};
+				this.css = `nav#${this.ids.NavWoFw} {${this.config.navCSSForMobile}}${this.config.contentsCSSForMobile}`;
+			} else {
+				this.css = `nav#${this.ids.NavWoFw} {${this.config.navCSSForDesktop}}${this.config.contentsCSSForDesktop}`;
+			}
 		}
-	}
-};
+	};
+})();

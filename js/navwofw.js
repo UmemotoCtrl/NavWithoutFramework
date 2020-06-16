@@ -12,13 +12,13 @@
 			'--NavWoFwTextColor': 'whitesmoke',
 			'--NavWoFwBackgroundColor': '#10606D',
 			'--NavWoFwFocusedColor': '#008082',
-			'--NavWoFwFontSize': '1.1rem',
+			'--NavWoFwFontSize': '1.2rem',
 			'--NavWoFwIconHeight': '3rem',
-			'--NavWoFwLiPaddingDesktop': '0.75rem 0.5rem'
+			'--NavWoFwLiPaddingDesktop': '0.5rem 0.5rem'
 		},
 		topMargin: 16,	// unit, px
-		navCSSForMobile: `
-			position: fixed; top: 0; left: 0;
+		headerCSSForMobile: `
+			position: absolute; top: 0; left: 0;
 			width: 100%;
 			margin: 0;
 			padding auto;
@@ -30,6 +30,9 @@
 			// flex-wrap
 		`,
 		contentsCSSForMobile: `
+			html {
+				scroll-behavior: smooth;
+			}
 			img#NavWoFwImg {
 				display: block;
 				margin: auto 0 auto 0.5rem;
@@ -38,56 +41,55 @@
 			}
 			h1#NavWoFwH1 {
 				font-size: 1rem;
-				// overflow: visible;
 				overflow: hidden;
-				// margin: auto 1rem;
 				margin-left: 1rem;
 				padding: 0;
 				color: var(--NavWoFwTextColor);
 			}
-			#NavWoFwHamburger {
+			nav#NavWoFw {
 				margin: auto 0 auto auto;
 				padding: 0;
 				color: var(--NavWoFwTextColor);
 				word-wrap: break-word;
 				// word-break: break-all;
 			}
-			#NavWoFwHamburger a {
+			#NavWoFw a {
 				color: var(--NavWoFwTextColor);
 				text-decoration: none;
 				font-weight: bold;
 			}
-			#NavWoFwHamburger > label > img {
+			#NavWoFw > label > img {
 				display: block;
 				margin: auto 0 auto auto;
 				width: var(--NavWoFwIconHeight);
 				height: var(--NavWoFwIconHeight);
 			}
-			#NavWoFwHamburger > input {
+			#NavWoFw > input {
 				display: none;
 			}
-			#NavWoFwHamburger > ul {
+			#NavWoFw > ul {
+				position: absolute; top: var(--NavWoFwIconHeight); right: 0;
 				padding: 0;
 				margin: 0;
 				list-style-type: none;
 				background: var(--NavWoFwBackgroundColor);
 				max-width: var(--NavWoFwIconWidth);
 			}
-			#NavWoFwHamburger > ul ul {
+			#NavWoFw > ul ul {
 				padding: 0;
 				margin: 0.5rem 0 0 0;
 				list-style-type: none;
 			}
-			#NavWoFwHamburger > ul > li {
+			#NavWoFw > ul > li {
 				padding: 0.5rem 1rem;
 				background: var(--NavWoFwBackgroundColor);
 				border-bottom: 1px solid var(--NavWoFwTextColor);
 			}
-			#NavWoFwHamburger li li {
+			#NavWoFw li li {
 				padding: 0.5rem 1rem;
 				border-top: 1px solid var(--NavWoFwTextColor);
 			}
-			#NavWoFwHamburger > input + label + ul{
+			#NavWoFw > input + label + ul{
 				overflow: hidden;
 				max-height: 0;
 				transition-property: max-height max-width padding border;
@@ -99,14 +101,26 @@
 				// -o-transition: max-height .2s ease;
 				// -ms-transition: max-height .2s ease;
 			}
-			#NavWoFwHamburger > input[type="checkbox"]:checked + label + ul {
+			#NavWoFw > input[type="checkbox"]:checked + label + ul {
 				// height: fit-content;
 				max-height: 40rem;
 				max-width: 20rem;
 				padding: 0.5rem;
 			}
+			div#NavWoFwToTop {
+				position: fixed; bottom: .5rem; left: .5rem;
+				width: 2rem;
+				height: 2rem;
+				text-align: center;
+				font-size: 2rem;
+				font-weight: bold;
+				color: black;
+				border: 1px solid black;
+				border-radius: 1rem;
+				background: rgba(255,255,255, 0.5);
+			}
 		`,
-		navCSSForDesktop: `
+		headerCSSForDesktop: `
 			position: fixed; top: 0; left: 0;
 			width: 100%;
 			margin: 0;
@@ -116,11 +130,6 @@
 			align-items: center; // vertical
 		`,
 		contentsCSSForDesktop: `
-			#NavWoFwHamburger > label,
-			#NavWoFwHamburger > img,
-			#NavWoFwHamburger > input {
-				display: none;
-			}
 			img#NavWoFwImg {
 				display: block;
 				margin: auto 0 auto 0.5rem;
@@ -135,7 +144,7 @@
 				color: var(--NavWoFwTextColor);
 				font-size: 1.33rem;
 			}
-			div#NavWoFwHamburger {
+			#NavWoFw {
 				margin: auto 0 auto auto;
 				padding: 0;
 			}
@@ -151,7 +160,6 @@
 			ul#NavWoFwMenu li {
 				margin: 0;
 				padding: var(--NavWoFwLiPaddingDesktop);
-				// transition-property: max-height padding background;
 				transition-property: all;
 				transition-duration: .2s;
 			}
@@ -161,14 +169,12 @@
 			}
 			ul#NavWoFwMenu ul {
 				list-style-type: none;
-				margin: 0.5rem 0 0 0;
+				margin: 0;
 				padding: 0;
 				font-size: var(--NavWoFwFontSize);
+				transition-property: all;
+				transition-duration: .2s;
 			}
-			// ul#NavWoFwMenu ul:before {
-			// 	display: inline;
-			// 	content: "v";
-			// }
 			ul#NavWoFwMenu ul li {
 				max-height: 0;
 				overflow: hidden;
@@ -177,6 +183,9 @@
 			}
 			ul#NavWoFwMenu > li:hover {
 				background: var(--NavWoFwFocusedColor);
+			}
+			ul#NavWoFwMenu li:hover > ul {
+				margin: 0.5rem 0 0 0;
 			}
 			ul#NavWoFwMenu li:hover > ul > li {
 				max-height: 10rem;
@@ -196,20 +205,22 @@
 		config: initConfig,
 		mobile: false,
 		ids: {
-			NavWoFw: null,
-			NavWoFwHamburger: 'NavWoFwHamburger',
+			header: null,
+			NavWoFw: 'NavWoFw',
 			NavWoFwMenu: 'NavWoFwMenu',
 			NavWoFwImg: 'NavWoFwImg',
 			NavWoFwH1: 'NavWoFwH1',
-			NavWoFwDiv: 'NavWoFwDiv'
+			NavWoFwDiv: 'NavWoFwDiv',
+			NavWoFwToTop: 'NavWoFwToTop'
 		},
 		elements: {
-			NavWoFw: null,
-			NavWoFwHamburger: null,
-			NavWoFwMenu: null,
-			NavWoFwImg: null,
-			NavWoFwH1: null,
-			NavWoFwDiv: null
+			header: null,
+			NavWoFw: document.createElement('nav'),	
+			NavWoFwMenu: document.createElement("ul"),	// ul
+			NavWoFwImg: null,	// img
+			NavWoFwH1: null,	// h1
+			NavWoFwDiv: null,	// div, not implemented
+			NavWoFwToTop: document.createElement("div")
 		},
 		css: '',
 		addImg: function (argSrc, argAlt) {
@@ -224,7 +235,7 @@
 			this.elements.NavWoFwH1.innerHTML = argText;
 		},
 		onClickHamburger: function (event) {
-			this.setHamburgerMenu(document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked);
+			this.setHamburgerMenu(document.querySelector(`#${this.ids.NavWoFw} > input`).checked);
 			// if (document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked)
 			// 	document.querySelector(`#${this.ids.NavWoFwHamburger} > label >img`).src = this.config.srcCross;
 			// else
@@ -232,11 +243,11 @@
 		},
 		setHamburgerMenu: function ( argBool ) {
 			if ( argBool ) {
-				document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked = true;
-				document.querySelector(`#${this.ids.NavWoFwHamburger} > label > img`).src = this.config.srcCross;
+				document.querySelector(`#${this.ids.NavWoFw} > input`).checked = true;
+				document.querySelector(`#${this.ids.NavWoFw} > label > img`).src = this.config.srcCross;
 			} else {
-				document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked = false;
-				document.querySelector(`#${this.ids.NavWoFwHamburger} > label > img`).src = this.config.srcHamb;
+				document.querySelector(`#${this.ids.NavWoFw} > input`).checked = false;
+				document.querySelector(`#${this.ids.NavWoFw} > label > img`).src = this.config.srcHamb;
 			}
 		},
 		render: function () {
@@ -248,12 +259,11 @@
 			}
 	
 			var style = document.createElement("style");
-			this.mobile = navigator.userAgent.match(this.config.mobileMatchRegExp) || this.mobile;
 			if ( this.mobile ) {
 				this.elements.NavWoFw.onmouseleave = function() {window.navbarWoFw.setHamburgerMenu(false)};
-				this.css = `nav#${this.ids.NavWoFw} {${this.config.navCSSForMobile}}${this.config.contentsCSSForMobile}`;
+				this.css = `header {${this.config.headerCSSForMobile}}${this.config.contentsCSSForMobile}`;
 			} else {
-				this.css = `nav#${this.ids.NavWoFw} {${this.config.navCSSForDesktop}}${this.config.contentsCSSForDesktop}`;
+				this.css = `header {${this.config.headerCSSForDesktop}}${this.config.contentsCSSForDesktop}`;
 			}
 			style.innerHTML = this.css;
 			document.getElementsByTagName("head")[0].appendChild(style);
@@ -263,47 +273,50 @@
 				contents.push(this.elements.NavWoFwImg);
 			if (this.elements.NavWoFwH1 != null)
 				contents.push(this.elements.NavWoFwH1);
-			contents.push(this.elements.NavWoFwHamburger);
+			contents.push(this.elements.NavWoFw);
 	
 			for (let ii = 0; ii < (contents||[]).length; ii++)
-				this.elements.NavWoFw.appendChild(contents[ii]);
+				this.elements.header.appendChild(contents[ii]);
 			// Fix position of navbar elements.
 			for (let ii = 0; ii < (contents||[]).length; ii++) {
-				contents[ii].style.marginTop = (this.elements.NavWoFw.clientHeight - contents[ii].clientHeight)/2+'px';
+				contents[ii].style.marginTop = (this.elements.header.clientHeight - contents[ii].clientHeight)/2+'px';
 			}
 			// Fix width of list items.
 			if (!this.mobile) {
-				var listItems = document.getElementById('NavWoFwMenu').children;
+				var listItems = this.elements.NavWoFwMenu.children;
 				for (let ii = 0; ii < (listItems||[]).length; ii++) {
 					listItems[ii].style.width = listItems[ii].clientWidth + 'px';
 				}
 			}
 			
-			this.elements.NavWoFw.style.height = this.elements.NavWoFw.clientHeight+'px';
-			// this.elements.NavWoFw.style.width = this.elements.NavWoFw.clientWidth+'px';
-			// this.elements.NavWoFw.style.overflow = 'visible';
+			this.elements.header.style.height = this.elements.header.clientHeight+'px';
+			// this.elements.header.style.width = this.elements.header.clientWidth+'px';
+			// this.elements.header.style.overflow = 'visible';
 	
-			document.getElementsByTagName('body')[0].style.marginTop = this.elements.NavWoFw.clientHeight+this.config.topMargin+'px';
+			document.getElementsByTagName('body')[0].style.marginTop = this.elements.header.clientHeight+this.config.topMargin+'px';
 		},
-		create: function ( argID, argList ) {
-			this.elements.NavWoFw = document.getElementById(argID);
-			this.ids.NavWoFw = argID;
-		
-			var NavWoFwHamburger = document.createElement('div');
-			NavWoFwHamburger.id = 'NavWoFwHamburger';
-			NavWoFwHamburger.innerHTML = `
-			<input type="checkbox" id="NavWoFwHambChkBx" onclick="window.navbarWoFw.onClickHamburger()">
-			<label for="NavWoFwHambChkBx"><img src="${this.config.srcHamb}"></label>`;
+		create: function ( argList ) {
+			this.mobile = navigator.userAgent.match(this.config.mobileMatchRegExp) || this.mobile;
+			this.elements.header = document.getElementsByTagName('header')[0];
+
+			this.elements.NavWoFw.id = this.ids.NavWoFw;
+			if (this.mobile) {
+				this.elements.NavWoFw.innerHTML = `
+				<input type="checkbox" id="NavWoFwHambChkBx" onclick="window.navbarWoFw.onClickHamburger()">
+				<label for="NavWoFwHambChkBx"><img src="${this.config.srcHamb}"></label>`;
+			}
 	
-			var NavWoFwMenu = document.createElement("ul");
-			NavWoFwMenu.innerHTML = argList;
-			NavWoFwMenu = NavWoFwMenu.firstElementChild;
-			NavWoFwMenu.id = 'NavWoFwMenu';
-			NavWoFwHamburger.appendChild(NavWoFwMenu);
-	
-			this.elements.NavWoFwHamburger = NavWoFwHamburger;
-	
-			this.elements.NavWoFwMenu = NavWoFwMenu;
+			this.elements.NavWoFwMenu.innerHTML = argList;
+			this.elements.NavWoFwMenu = this.elements.NavWoFwMenu.firstElementChild;
+			this.elements.NavWoFwMenu.id = this.ids.NavWoFwMenu;
+			this.elements.NavWoFw.appendChild(this.elements.NavWoFwMenu);
+
+			if (this.mobile) {
+				this.elements.NavWoFwToTop.id = this.ids.NavWoFwToTop;
+				this.elements.NavWoFwToTop.innerHTML = "^";
+				this.elements.NavWoFwToTop.onclick = function(){scrollTo(0, 0);};
+				this.elements.NavWoFw.appendChild(this.elements.NavWoFwToTop);
+			}
 		}
 	};
 })();

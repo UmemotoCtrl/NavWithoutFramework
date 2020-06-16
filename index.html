@@ -7,12 +7,18 @@
   <link rel="shortcut icon" type="image/x-icon" href="https://umemotoctrl.github.io/img/favicon.ico" />
   <!-- CSS -->
   <link rel="stylesheet" href="css/light.min.css">
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- <link rel="stylesheet" href="css/style.css" /> -->
   <style>
-    /* div {
-      color: rgb(65, 147, 102);
-      color: rgb(154, 18, 154);
-    } */
+    :root {
+        --main-bg-color: whitesmoke;}
+    html {
+        font-size: 16px;
+        text-size-adjust: 200%;
+        -webkit-text-size-adjust: 200%;}
+    body {
+        background-color: var(--main-bg-color);}
+    footer p {
+        font-size: .9em;}
   </style>
   <!-- Original JS -->
   <script src="js/navwofw.js" defer></script>
@@ -22,37 +28,25 @@
       var config = window.navbarWoFw.config;
       config.srcHamb = '/img/hamburger.svg',
       config.srcCross = '/img/cross.svg',
-      // config.cssRootProperties['--NavWoFwBackgroundColor'] = 'rgb(65, 147, 102)';
-      // config.cssRootProperties['--NavWoFwFocusedColor'] = 'mediumseagreen';
+      config.cssRootProperties['--NavWoFwBackgroundColor'] = 'rgb(65, 147, 102)';
+      config.cssRootProperties['--NavWoFwFocusedColor'] = 'mediumseagreen';
       // config.cssRootProperties['--NavWoFwTextColor'] = 'black';
       // config.cssRootProperties['--NavWoFwBackgroundColor'] = 'whitesmoke';
       // config.cssRootProperties['--NavWoFwFocusedColor'] = 'gray';
       // config.cssRootProperties['--NavWoFwFontSize'] = '1rem';
       // config.cssRootProperties['--NavWoFwLiPaddingDesktop'] = '0.5rem 0.2rem';
-      // window.navbarWoFw.config.cssRootProperties = {
-      //   '--NavWoFwTextColor': 'whitesmoke',
-      //   '--NavWoFwBackgroundColor': '#8B008C',
-      //   '--NavWoFwFocusedColor': 'rgb(154, 18, 154)',
-      //   '--NavWoFwFontSize': '1.2rem',
-      //   '--NavWoFwIconHeight': '3rem',
-  		// 	'--NavWoFwLiPaddingDesktop': '0.75rem 0.5rem'
-      // };
+      // window.navbarWoFw.config.contentsCSSForMobile += "ul#NavWoFwMenu ul{display: none}";
       // window.navbarWoFw.config.navCSSForMobile = '';
       // window.navbarWoFw.config.contentsCSSForMobile = '';
       // window.navbarWoFw.config.navCSSForDesktop = '';
-      // window.navbarWoFw.config.contentsCSSForDesktop = `
-      //   #NavWoFwHamburger > label,
-      //   #NavWoFwHamburger > img,
-      //   #NavWoFwHamburger > input {
-      //     display: none;
-			// }`;
-    window.navbarWoFw.create('NavBar', `<ul>
+      // window.navbarWoFw.config.contentsCSSForDesktop = ``;
+    window.navbarWoFw.create(`<ul>
         <li><a href="#1">aaaaa</a></li>
         <li><a href="#2">bbbbbbbb</a><ul><li><a href="#">aaaaaa111111111111111111bb</a></li><li><a href="#">2</a></li><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li><li><a href="#">111111111111111111</a></li><li><a href="#">2</a></li></ul></li>
         <li><a href="#3">ccccccc</a></li>
         <li>ddddddd<ul><li><a href="#4">111111111111111111</a></li><li><a href="#">2</a></li></ul></li>
         </ul>`);
-      window.navbarWoFw.addH1('NavWithoutFramework');
+      window.navbarWoFw.addH1('NavWithoutFrameworkAAAAAAAAAAAAAA');
       // window.navbarWoFw.elements.NavWoFwH1.style.fontSize = '1.5rem';
       window.navbarWoFw.addImg('/img/logo.svg', 'logo');
       // window.navbarWoFw.addImg(src); // not implemented
@@ -70,56 +64,56 @@
   </script> -->
 </head>
 <body>
-<nav id="NavBar"></nav>
-<main id="article">
-  <p>test1</p>
-  <p>test2.</p>
-  <p>test3.</p>
-  <p>test4.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-  <p>test.</p>
-</main>
+  <header></header>
+  <main id="article">
+    <p>test1</p>
+    <p>test2.</p>
+    <p>test3.</p>
+    <p>test4.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+    <p>test.</p>
+  </main>
 <hr />
 <footer>
   <p>Copyright (c) 2020 Kazuki Umemoto</p>

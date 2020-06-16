@@ -235,19 +235,23 @@
 			this.elements.NavWoFwH1.innerHTML = argText;
 		},
 		onClickHamburger: function (event) {
-			this.setHamburgerMenu(document.querySelector(`#${this.ids.NavWoFw} > input`).checked);
+			if (this.mobile) {
+				this.setHamburgerMenu(document.querySelector(`#${this.ids.NavWoFw} > input`).checked);
+			}
 			// if (document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked)
 			// 	document.querySelector(`#${this.ids.NavWoFwHamburger} > label >img`).src = this.config.srcCross;
 			// else
 			// 	document.querySelector(`#${this.ids.NavWoFwHamburger} > label > img`).src = this.config.srcHamb;
 		},
 		setHamburgerMenu: function ( argBool ) {
-			if ( argBool ) {
-				document.querySelector(`#${this.ids.NavWoFw} > input`).checked = true;
-				document.querySelector(`#${this.ids.NavWoFw} > label > img`).src = this.config.srcCross;
-			} else {
-				document.querySelector(`#${this.ids.NavWoFw} > input`).checked = false;
-				document.querySelector(`#${this.ids.NavWoFw} > label > img`).src = this.config.srcHamb;
+			if (this.mobile) {
+				if ( argBool ) {
+					document.querySelector(`#${this.ids.NavWoFw} > input`).checked = true;
+					document.querySelector(`#${this.ids.NavWoFw} > label > img`).src = this.config.srcCross;
+				} else {
+					document.querySelector(`#${this.ids.NavWoFw} > input`).checked = false;
+					document.querySelector(`#${this.ids.NavWoFw} > label > img`).src = this.config.srcHamb;
+				}
 			}
 		},
 		render: function () {

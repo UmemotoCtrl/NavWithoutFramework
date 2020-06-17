@@ -12,7 +12,8 @@
 			'--NavWoFwFocusedColor': '#008082',
 			'--NavWoFwFontSize': '1.2rem',
 			'--NavWoFwIconHeight': '3rem',
-			'--NavWoFwLiPaddingDesktop': '0.5rem 0.5rem'
+			'--NavWoFwLiPaddingDesktop': '0.5rem 0.5rem',
+			'--NavWoFwMaxListHeight': '50rem'
 		},
 		topMargin: 16,	// unit, px
 		headerCSSForMobile: `
@@ -89,7 +90,7 @@
 				border-top: 1px solid var(--NavWoFwTextColor);
 			}
 			#NavWoFw > input[type="checkbox"]:checked + label + ul {
-				max-height: 40rem;
+				max-height: var(--NavWoFwMaxListHeight);
 				max-width: 100%;
 				padding: 0.5rem;
 			}
@@ -154,6 +155,7 @@
 				padding: var(--NavWoFwLiPaddingDesktop);
 				transition-property: all;
 				transition-duration: .2s;
+				white-space: nowrap;
 			}
 			ul#NavWoFwMenu a {
 				text-decoration: none;
@@ -180,7 +182,7 @@
 				margin: 0.5rem 0 0 0;
 			}
 			ul#NavWoFwMenu li:hover > ul > li {
-				max-height: 10rem;
+				max-height: calc(var(--NavWoFwMaxListHeight)*0.5);
 				// overflow: visible;
 				padding: var(--NavWoFwLiPaddingDesktop);
 			}

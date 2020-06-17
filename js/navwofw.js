@@ -6,8 +6,6 @@
 (function () {
 	var initConfig = {
 		mobileMatchRegExp: new RegExp("iPhone|Android.+Mobile"),
-		srcHamb: 'https://cdn.jsdelivr.net/gh/UmemotoCtrl/NavWithoutFramework@0.01/img/hamburger.svg',
-		srcCross: 'https://cdn.jsdelivr.net/gh/UmemotoCtrl/NavWithoutFramework@0.01/img/cross.svg',
 		cssRootProperties: {
 			'--NavWoFwTextColor': 'whitesmoke',
 			'--NavWoFwBackgroundColor': '#10606D',
@@ -28,7 +26,9 @@
 			align-items: center; // vertical
 			// justify-content: center; // horizontal
 			// flex-wrap
-		`,
+			// word-wrap: break-word;
+			// word-break: break-all;
+	`,
 		contentsCSSForMobile: `
 			html {
 				scroll-behavior: smooth;
@@ -36,7 +36,6 @@
 			img#NavWoFwImg {
 				display: block;
 				margin: auto 0 auto 0.5rem;
-				// width: 2.5rem;
 				height: calc(var(--NavWoFwIconHeight)*0.6);
 			}
 			h1#NavWoFwH1 {
@@ -50,19 +49,19 @@
 				margin: auto 0 auto auto;
 				padding: 0;
 				color: var(--NavWoFwTextColor);
-				word-wrap: break-word;
-				// word-break: break-all;
 			}
 			#NavWoFw a {
 				color: var(--NavWoFwTextColor);
 				text-decoration: none;
 				font-weight: bold;
 			}
-			#NavWoFw > label > img {
+			#NavWoFw > label {
 				display: block;
-				margin: auto 0 auto auto;
+				text-align: center;
 				width: var(--NavWoFwIconHeight);
 				height: var(--NavWoFwIconHeight);
+				line-height: var(--NavWoFwIconHeight);
+				font-size: calc(var(--NavWoFwIconHeight)*0.8);
 			}
 			#NavWoFw > input {
 				display: none;
@@ -75,48 +74,41 @@
 				background: var(--NavWoFwBackgroundColor);
 				max-width: var(--NavWoFwIconWidth);
 			}
-			#NavWoFw > ul ul {
-				padding: 0;
-				margin: 0.5rem 0 0 0;
-				list-style-type: none;
-			}
 			#NavWoFw > ul > li {
 				padding: 0.5rem 1rem;
 				background: var(--NavWoFwBackgroundColor);
 				border-bottom: 1px solid var(--NavWoFwTextColor);
 			}
+			#NavWoFw > ul ul {
+				padding: 0;
+				margin: 0.5rem 0 0 0;
+				list-style-type: none;
+			}
 			#NavWoFw li li {
 				padding: 0.5rem 1rem;
 				border-top: 1px solid var(--NavWoFwTextColor);
+			}
+			#NavWoFw > input[type="checkbox"]:checked + label + ul {
+				max-height: 40rem;
+				max-width: 100%;
+				padding: 0.5rem;
 			}
 			#NavWoFw > input + label + ul{
 				overflow: hidden;
 				max-height: 0;
 				transition-property: max-height max-width padding border;
 				transition-duration: .2s;
-				// transition: .2s;
-				// transition-property: all;
-				// -webkit-transition: max-height .2s ease;
-				// -moz-transition: max-height .2s ease;
-				// -o-transition: max-height .2s ease;
-				// -ms-transition: max-height .2s ease;
-			}
-			#NavWoFw > input[type="checkbox"]:checked + label + ul {
-				// height: fit-content;
-				max-height: 40rem;
-				max-width: 20rem;
-				padding: 0.5rem;
 			}
 			div#NavWoFwToTop {
 				position: fixed; bottom: .5rem; left: .5rem;
-				width: 2rem;
-				height: 2rem;
+				width: calc(var(--NavWoFwIconHeight)*0.6);
+				height: calc(var(--NavWoFwIconHeight)*0.6);
 				text-align: center;
-				font-size: 2rem;
+				font-size: calc(var(--NavWoFwIconHeight)*0.6);
 				font-weight: bold;
 				color: black;
 				border: 1px solid black;
-				border-radius: 1rem;
+				border-radius: calc(var(--NavWoFwIconHeight)*0.3);
 				background: rgba(255,255,255, 0.5);
 			}
 		`,
@@ -234,23 +226,12 @@
 			this.elements.NavWoFwH1.id = 'NavWoFwH1';
 			this.elements.NavWoFwH1.innerHTML = argText;
 		},
-		onClickHamburger: function (event) {
-			if (this.mobile) {
-				this.setHamburgerMenu(document.querySelector(`#${this.ids.NavWoFw} > input`).checked);
-			}
-			// if (document.querySelector(`#${this.ids.NavWoFwHamburger} > input`).checked)
-			// 	document.querySelector(`#${this.ids.NavWoFwHamburger} > label >img`).src = this.config.srcCross;
-			// else
-			// 	document.querySelector(`#${this.ids.NavWoFwHamburger} > label > img`).src = this.config.srcHamb;
-		},
 		setHamburgerMenu: function ( argBool ) {
 			if (this.mobile) {
 				if ( argBool ) {
 					document.querySelector(`#${this.ids.NavWoFw} > input`).checked = true;
-					document.querySelector(`#${this.ids.NavWoFw} > label > img`).src = this.config.srcCross;
 				} else {
 					document.querySelector(`#${this.ids.NavWoFw} > input`).checked = false;
-					document.querySelector(`#${this.ids.NavWoFw} > label > img`).src = this.config.srcHamb;
 				}
 			}
 		},
@@ -306,8 +287,8 @@
 			this.elements.NavWoFw.id = this.ids.NavWoFw;
 			if (this.mobile) {
 				this.elements.NavWoFw.innerHTML = `
-				<input type="checkbox" id="NavWoFwHambChkBx" onclick="window.navbarWoFw.onClickHamburger()">
-				<label for="NavWoFwHambChkBx"><img src="${this.config.srcHamb}"></label>`;
+				<input type="checkbox" id="NavWoFwHambChkBx">
+				<label for="NavWoFwHambChkBx">&#9776;</label>`;
 			}
 	
 			this.elements.NavWoFwMenu.innerHTML = argList;
